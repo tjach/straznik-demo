@@ -1,0 +1,11 @@
+# Konfiguracja CodeRabbit (opcjonalna — bez tego pliku działają ustawienia domyślne).
+# CodeRabbit to agent AI, który automatycznie recenzuje pull requesty.
+# Na repo PUBLICZNYM jest darmowy. Instalujesz go raz, jako GitHub App (patrz README).
+language: pl-PL
+reviews:
+  profile: chill            # spokojny ton komentarzy (alternatywa: assertive)
+  high_level_summary: true  # krótkie podsumowanie PR-a na górze
+  request_changes_workflow: false
+  poem: false
+  auto_review:
+    enabled: true

@@ -1,0 +1,46 @@
+# Pipeline CI/CD dla STRAŻNIKA (materiał szkoleniowy).
+# Etapy mapują się na to, co omawiamy na slajdach:
+#   BUILD  -> przygotowanie środowiska i instalacja zależności
+#   TEST   -> uruchomienie testów (pytest)
+#   REVIEW -> automatyczny przegląd PR przez agenta AI (CodeRabbit, osobno jako GitHub App)
+#   DEPLOY -> tu tylko atrapa (na produkcję nie wdrażamy w szkoleniu)
+#
+# Na repo PUBLICZNYM minuty GitHub Actions są darmowe — dlatego repo szkoleniowe robimy publiczne.
+#
+# Uwaga (2026): akcje checkout@v4 / setup-python@v5 mogą wypisać żółte ostrzeżenie o Node 20.
+# To NIE jest błąd — pipeline jest zielony; GitHub przechodzi na Node 24. Można podbić tagi, gdy wyjdą wyższe.
+
+name: CI STRAŻNIK
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  build-and-test:
+    name: Build i testy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pobranie kodu
+        uses: actions/checkout@v4
+
+      - name: Konfiguracja Pythona (BUILD)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Instalacja zależności (BUILD)
+        run: pip install -r requirements.txt
+
+      - name: Testy (TEST)
+        run: pytest -q
+
+  deploy:
+    name: Deploy (atrapa)
+    needs: build-and-test
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Symulacja wdrożenia (DEPLOY)
+        run: echo "Tu trafiłby krok wdrożenia na produkcję. W szkoleniu tylko go markujemy."
