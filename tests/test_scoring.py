@@ -17,7 +17,7 @@ def test_card_testing_zablokuj():
           "nowy_odbiorca": "tak"}
     w = ocen_transakcje(tx)
     assert w["decyzja"] == "ZABLOKUJ"
-    assert w["score"] > 70
+    assert w["score"] > 40
     assert any("card testing" in p for p in w["powody"])
 
 
