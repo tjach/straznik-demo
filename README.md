@@ -48,7 +48,7 @@ Konfiguracja (raz):
 2. Opcjonalnie zostaw `.coderabbit.yaml` (jest w repo) — bez niego działają ustawienia domyślne.
 3. Od teraz każdy nowy PR dostaje automatyczny komentarz-przegląd od CodeRabbit.
 
-Alternatywa „w stacku klienta": **GitHub Copilot code review** (organizacja ma Copilota) — też działa na repo publicznym bez dodatkowego klucza. Pełna instrukcja jako plan B: `FALLBACK-copilot-code-review.md`.
+Alternatywnie można użyć **GitHub Copilot code review** — też działa na repo publicznym, bez dodatkowego klucza.
 
 ## Dla uczestników — Ćwiczenie 3 (na WŁASNYM repo)
 
@@ -59,8 +59,12 @@ Każdy ma swoje repo z tego szablonu (założone w preworku) — wasza piaskowni
 3. **Dodajcie nową regułę** scoringu z pomocą Cursora (+ test) → PR → pipeline i przegląd CodeRabbit.
 4. Interpretujcie jak PM.
 
-Pełna instrukcja: `CWICZENIE-3-pipeline.md`. Rozwiązanie wzorcowe (dla prowadzącego): `ROZWIAZANIE-wzorcowe-dodaj-regule.md`.
+Pełna instrukcja krok po kroku: `CWICZENIE-3-pipeline.md`.
 
 ## Uwaga
 
 To uproszczony materiał dydaktyczny, nie produkcyjny system antyfraud. Logika scoringu jest celowo prosta i czytelna dla osób nietechnicznych.
+
+## Licencja
+
+MIT — patrz plik [`LICENSE`](LICENSE).

@@ -7,14 +7,13 @@
 #
 # Na repo PUBLICZNYM minuty GitHub Actions są darmowe — dlatego repo szkoleniowe robimy publiczne.
 #
-# Uwaga (2026): akcje checkout@v4 / setup-python@v5 mogą wypisać żółte ostrzeżenie o Node 20.
-# To NIE jest błąd — pipeline jest zielony; GitHub przechodzi na Node 24. Można podbić tagi, gdy wyjdą wyższe.
+# Akcje (2026): checkout@v5 / setup-python@v6 działają na Node 24 — bez ostrzeżenia o Node 20.
 
 name: CI STRAŻNIK
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, master ]
   pull_request:
 
 jobs:
@@ -23,10 +22,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Pobranie kodu
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Konfiguracja Pythona (BUILD)
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.12"
 
@@ -39,7 +38,7 @@ jobs:
   deploy:
     name: Deploy (atrapa)
     needs: build-and-test
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
       - name: Symulacja wdrożenia (DEPLOY)
