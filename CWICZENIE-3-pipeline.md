@@ -20,13 +20,24 @@ Pipeline budował prowadzący — teraz wy nim **żyjecie**: psujecie, patrzycie
 
 ## Krok 3 — DODAJ nową regułę (z Cursorem) i otwórz PR
 
-1. Otwórzcie swoje repo w Cursorze (albo edytujcie na GitHubie). Wymyślcie nową regułę ryzyka i poproście Cursora, np.:
+Wymyślcie nową regułę ryzyka (np. „transakcja w weekend podnosi ryzyko", „kwota powyżej 5000", „kraj IP z listy ryzykownych").
 
-   > „Dodaj do scoring.py regułę: jeśli transakcja jest w weekend (sobota/niedziela wg pola czas_transakcji), podnieś score o 10 i dodaj powód 'Transakcja w weekend'. Dopisz też test w tests/test_scoring.py sprawdzający tę regułę."
+**Spróbuj sam.** Najpierw sami napiszcie Cursorowi, czego chcecie — pełnym zdaniem, z kontekstem (który plik, jak ma się zachować, że ma dopisać test i nie zepsuć istniejących). Dopiero potem zerknijcie na wzorzec.
 
-   (Możecie wymyślić własną regułę — np. „kwota powyżej 5000" albo „kraj IP z listy ryzykownych".)
-2. Otwórzcie **pull request** ze swoją zmianą.
-3. Patrzcie na dwie rzeczy: czy **pipeline** jest zielony (czy nowy test przechodzi) i co napisał **CodeRabbit** w komentarzu do PR.
+<details markdown="1"><summary>🔓 Jeśli chcesz modelowy prompt — kliknij (ale spróbuj najpierw sam)</summary>
+
+> Jesteś inżynierem pracującym nad serwisem oceny ryzyka transakcji w pliku `straznik/scoring.py`. Dodaj nową regułę scoringu: [opisz regułę, np. „jeśli transakcja jest w weekend — sobota/niedziela wg pola czas_transakcji — podnieś score o 10 i dopisz powód 'Transakcja w weekend'"].
+>
+> Wymagania:
+> 1. regułę dodaj w funkcji `ocen_transakcje`, spójnie z istniejącym stylem (dodaje punkty do `score` i dopisuje czytelny powód do listy `powody`);
+> 2. **obsłuż brak lub niepoprawne dane** — kod nie może się wywalić, gdy pola nie ma albo ma zły format;
+> 3. dopisz **test** w `tests/test_scoring.py`, który sprawdza, że reguła działa, i nadaj mu opisową nazwę;
+> 4. **nie zepsuj istniejących testów**;
+> 5. pokaż zmienione fragmenty obu plików i krótko wyjaśnij po polsku, co zmieniłeś.
+
+</details>
+
+Otwórzcie **pull request** ze swoją zmianą i patrzcie na dwie rzeczy: czy **pipeline** jest zielony (czy nowy test przechodzi) i co napisał **CodeRabbit** w komentarzu do PR.
 
 ## Interpretacja jak PM
 
@@ -36,14 +47,14 @@ Pipeline budował prowadzący — teraz wy nim **żyjecie**: psujecie, patrzycie
 
 ## Punkty kontrolne (powinniście mieć)
 
-- czerwony pipeline po kroku 1 (i rozumiecie, który test padł i czemu),
-- zielony po naprawie (krok 2),
-- PR z nową regułą: nowy test + komentarz CodeRabbit (krok 3).
+- [ ] czerwony pipeline po kroku 1 (i rozumiecie, który test padł i czemu)
+- [ ] zielony po naprawie (krok 2)
+- [ ] PR z nową regułą: nowy test + komentarz CodeRabbit (krok 3)
 
 ## Jeśli utkniecie
 
 - Pipeline nie rusza? Odświeżcie po ~30 s; sprawdźcie, że Actions są włączone w waszym repo.
-- Cursor „nie wie", gdzie dodać regułę? Wskażcie mu plik: „edytuj funkcję ocen_transakcje w straznik/scoring.py".
+- Cursor „nie wie", gdzie dodać regułę? Wskażcie mu plik: „edytuj funkcję `ocen_transakcje` w `straznik/scoring.py`".
 - Test od Cursora czerwony? Przeczytajcie komunikat — często to drobiazg (zła nazwa pola). Poproście Cursora: „popraw test, żeby przechodził".
 - Żółte ostrzeżenie o „Node.js 20" w logach to **nie błąd** — pipeline i tak jest zielony.
 - Nie tkwijcie dłużej niż 3 minuty — machnijcie na prowadzącego.
