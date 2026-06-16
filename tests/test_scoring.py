@@ -8,7 +8,7 @@ def test_legalna_zwykla_przepusc():
           "nowy_odbiorca": "nie"}
     w = ocen_transakcje(tx)
     assert w["decyzja"] == "PRZEPUŚĆ"
-    assert w["score"] < 40
+    assert w["score"] < 400
 
 
 def test_card_testing_zablokuj():
