@@ -44,7 +44,7 @@ def test_takeover_na_granicy_weryfikuj():
     # To celowy przypadek do Ćwiczenia 3: obniżenie progu do 50 zamieni go
     # w ZABLOKUJ i ten test się wywróci (pokazuje koszt zaostrzenia progu).
     tx = {"kraj_karty": "PL", "kraj_ip": "RU", "liczba_transakcji_10min": 1,
-          "kwota_vs_srednia_klienta": 8.0, "godzina": 12, "karta_obecna": "nie",
+          "kwota_vs_srednia_klienta": 82.0, "godzina": 12, "karta_obecna": "nie",
           "nowy_odbiorca": "nie"}
     w = ocen_transakcje(tx)
     assert w["decyzja"] == "WERYFIKUJ"
