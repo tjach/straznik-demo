@@ -6,6 +6,8 @@ pipeline miał co budować i testować, a kod był czytelny dla nie-developerów
 """
 from __future__ import annotations
 
+import datetime
+
 # Progi decyzyjne (spójne z case study):
 #   score < PROG_WERYFIKUJ        -> PRZEPUŚĆ
 #   PROG_WERYFIKUJ..PROG_ZABLOKUJ -> WERYFIKUJ
@@ -43,6 +45,23 @@ def _godzina(tx: dict):
             except ValueError:
                 return None
     return None
+
+
+def _czy_weekend(tx: dict) -> bool:
+    """Zwraca True, gdy data z 'czas_transakcji' wypada w sobotę lub niedzielę.
+
+    Akceptuje formaty z datą na początku, np. 'YYYY-MM-DD HH:MM:SS' lub samo
+    'YYYY-MM-DD'. Gdy pole jest brakujące lub nieparsowalne — zwraca False.
+    """
+    czas = str(tx.get("czas_transakcji", "")).strip()
+    if not czas:
+        return False
+    data_str = czas.split(" ")[0]
+    try:
+        data = datetime.date.fromisoformat(data_str)
+        return data.weekday() >= 5  # 5 = sobota, 6 = niedziela
+    except (ValueError, TypeError):
+        return False
 
 
 def _float(v):
@@ -92,6 +111,10 @@ def ocen_transakcje(tx: dict) -> dict:
     if _bool(tx.get("nowy_odbiorca")):
         score += 10
         powody.append("Nowy odbiorca")
+
+    if _czy_weekend(tx):
+        score += 10
+        powody.append("Transakcja w weekend")
 
     score = min(score, 100)
 

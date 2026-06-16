@@ -69,3 +69,48 @@ def test_warianty_kraju_sa_normalizowane():
     tx = {"kraj_karty": "Polska", "kraj_ip": "PL", "liczba_transakcji_10min": 1}
     w = ocen_transakcje(tx)
     assert all("różny od kraju IP" not in p for p in w["powody"])
+
+
+def test_transakcja_w_sobote_dodaje_score_i_powod():
+    # 2026-06-13 to sobota — reguła weekendowa powinna dodać 10 pkt i powód.
+    tx = {"kraj_karty": "PL", "kraj_ip": "PL", "liczba_transakcji_10min": 1,
+          "kwota_vs_srednia_klienta": 1.0, "karta_obecna": "tak",
+          "nowy_odbiorca": "nie", "czas_transakcji": "2026-06-13 10:00:00"}
+    w = ocen_transakcje(tx)
+    assert any("weekend" in p for p in w["powody"])
+    assert w["score"] >= 10
+
+
+def test_transakcja_w_niedziele_dodaje_score_i_powod():
+    # 2026-06-14 to niedziela.
+    tx = {"kraj_karty": "PL", "kraj_ip": "PL", "liczba_transakcji_10min": 1,
+          "kwota_vs_srednia_klienta": 1.0, "karta_obecna": "tak",
+          "nowy_odbiorca": "nie", "czas_transakcji": "2026-06-14 15:30:00"}
+    w = ocen_transakcje(tx)
+    assert any("weekend" in p for p in w["powody"])
+
+
+def test_transakcja_w_piatek_nie_wyzwala_reguly_weekendowej():
+    # 2026-06-12 to piątek — reguła weekendowa NIE powinna zadziałać.
+    tx = {"kraj_karty": "PL", "kraj_ip": "PL", "liczba_transakcji_10min": 1,
+          "kwota_vs_srednia_klienta": 1.0, "karta_obecna": "tak",
+          "nowy_odbiorca": "nie", "czas_transakcji": "2026-06-12 10:00:00"}
+    w = ocen_transakcje(tx)
+    assert all("weekend" not in p for p in w["powody"])
+
+
+def test_brak_pola_czas_transakcji_nie_powoduje_bledu():
+    # Brakujące pole — kod nie może zgłosić wyjątku.
+    tx = {"kraj_karty": "PL", "kraj_ip": "PL"}
+    w = ocen_transakcje(tx)
+    assert "score" in w
+    assert all("weekend" not in p for p in w["powody"])
+
+
+def test_niepoprawny_format_czas_transakcji_nie_powoduje_bledu():
+    # Zły format daty — kod nie może zgłosić wyjątku.
+    tx = {"kraj_karty": "PL", "kraj_ip": "PL",
+          "czas_transakcji": "nie-jestem-data"}
+    w = ocen_transakcje(tx)
+    assert "score" in w
+    assert all("weekend" not in p for p in w["powody"])
